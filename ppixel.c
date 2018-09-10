@@ -29,13 +29,19 @@ int fbfd;
 int left=0,middle=0,right=0,mouseX=0,mouseY=0;
 int MOUSEfile=0;
 struct termios oldt;
-    
+
+
+char trun[]="exo-open --launch TerminalEmulator ";
+int *oldIMAGE;
+
     
     void ppixel(int x, int y,char r,char g,char b);
     void startX();
+    void refresh();
     
     
-int startX(){
+void startX(){
+	char *c=" ";
 if(isatty(1)==0){
 char t[100];
 strcpy(t,trun);
@@ -50,8 +56,7 @@ ioctl(fbfd, FBIOGET_VSCREENINFO, &vinfo);
 screensize = vinfo.xres * vinfo.yres * vinfo.bits_per_pixel / 8;
 fbp = (char *)mmap(0, screensize, PROT_READ | PROT_WRITE, MAP_SHARED, fbfd, 0);
 
-oldIMAGE=creatImage(vinfo.xres,vinfo.yres);
-copyImage(0,0,oldIMAGE);
+
 
 struct termios newt;
 tcgetattr(fileno(stdin),&oldt);
@@ -70,7 +75,7 @@ oldt.c_lflag|=ECHO|ICANON;
 tcsetattr(fileno(stdin),TCSANOW,&oldt);
 close (MOUSEfile);
     close(fbfd);
-putImage(0,0,oldIMAGE);
+
 }
 
 
