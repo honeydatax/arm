@@ -20,7 +20,7 @@
 
     struct fb_var_screeninfo vinfo;
     struct fb_fix_screeninfo finfo;
-    
+int fbfd;
         struct fb_var_screeninfo vinfo;
     struct fb_fix_screeninfo finfo;
     long int screensize = 0;
@@ -37,7 +37,7 @@ struct termios oldt;
     
 void startX(){
 
-int fbfd = open("/dev/fb0", O_RDWR);
+fbfd = open("/dev/fb0", O_RDWR);
 ioctl(fbfd, FBIOGET_FSCREENINFO, &finfo);
 ioctl(fbfd, FBIOGET_VSCREENINFO, &vinfo);
 screensize = vinfo.xres * vinfo.yres * vinfo.bits_per_pixel / 8;
@@ -58,7 +58,7 @@ mouseX=vinfo.xres/2;
 mouseY=vinfo.yres/2;
 }
 
-void endX(int fbfd){
+void endX(){
 
 close (MOUSEfile);
     close(fbfd);
@@ -95,3 +95,4 @@ if (x>0 && y>0 && x<vinfo.xres && y<vinfo.yres){
 
 }
 }
+
