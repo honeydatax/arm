@@ -31,7 +31,7 @@ main:
 	bl startX
 	mov r10,#0
 	mov r8,#0
-	mov r7,#30
+	mov r7,#0
 
 	ldr r11,=a
 	ldr r9,=b
