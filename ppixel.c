@@ -35,13 +35,23 @@ struct termios oldt;
     void startX();
     
     
-void startX(){
-
-fbfd = open("/dev/fb0", O_RDWR);
+int startX(){
+if(isatty(1)==0){
+char t[100];
+strcpy(t,trun);
+strcat(t,c);
+strcat(t,"&");
+system(t);
+exit(0);
+}
+int fbfd = open("/dev/fb0", O_RDWR);
 ioctl(fbfd, FBIOGET_FSCREENINFO, &finfo);
 ioctl(fbfd, FBIOGET_VSCREENINFO, &vinfo);
 screensize = vinfo.xres * vinfo.yres * vinfo.bits_per_pixel / 8;
 fbp = (char *)mmap(0, screensize, PROT_READ | PROT_WRITE, MAP_SHARED, fbfd, 0);
+
+oldIMAGE=creatImage(vinfo.xres,vinfo.yres);
+copyImage(0,0,oldIMAGE);
 
 struct termios newt;
 tcgetattr(fileno(stdin),&oldt);
@@ -50,19 +60,22 @@ newt.c_lflag &= ~(ECHO|ICANON);
 newt.c_cc[VTIME]=0;
 newt.c_cc[VMIN]=0;
 tcsetattr(fileno(stdin),TCSANOW,&newt);
-
-
-
 MOUSEfile=open("/dev/input/mice",O_RDONLY|O_NONBLOCK);
 mouseX=vinfo.xres/2;
 mouseY=vinfo.yres/2;
 }
 
 void endX(){
-
+oldt.c_lflag|=ECHO|ICANON;
+tcsetattr(fileno(stdin),TCSANOW,&oldt);
 close (MOUSEfile);
     close(fbfd);
+putImage(0,0,oldIMAGE);
+}
 
+
+void refresh(){
+   munmap(fbp, screensize);
 }
     
 
