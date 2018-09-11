@@ -30,6 +30,8 @@ c: .word	5000000
 
 back:
 	push {ip,lr}
+	push {r3-r11}
+	
 	ldr r4,=backred
 	str r0,[r4]
 	
@@ -66,9 +68,11 @@ back1:
 	
 	mov r0,r8
 	mov r1,r7
-	
+	push {r5-r11}
 
 	bl ppixel
+	
+	pop {r5-r11}
 
 	mov r6,#1
 	add r8,r8,r6
@@ -85,6 +89,8 @@ back2:
 	bne back1
 
 back5:
+
+	pop {r3-r11}
 	pop {ip,pc}
 
 main:
@@ -99,19 +105,12 @@ main:
 exitss:
 	ldr r0,=c
 	ldr r0,[r0]
-	bl usleep
+	@bl usleep
 
 	bl endX
 
 	mov r0,#0
 	bl exit
-
-
-
-
-
-
-
 
 
 
