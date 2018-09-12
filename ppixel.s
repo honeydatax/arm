@@ -20,7 +20,6 @@ c: .word	5000000
 
 
 
-
 .text
 .global main
 .extern printf
