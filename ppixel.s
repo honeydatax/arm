@@ -19,7 +19,6 @@ b: .word	478
 c: .word	5000000
 
 
-
 .text
 .global main
 .extern printf
@@ -87,6 +86,10 @@ back2:
 
 back5:
 	pop {ip,pc}
+
+
+
+
 
 main:
 
