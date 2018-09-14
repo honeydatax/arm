@@ -88,9 +88,6 @@ back5:
 	pop {ip,pc}
 
 
-
-
-
 main:
 
 	bl startX
@@ -99,6 +96,7 @@ main:
 	mov r2,#0
 	
 	bl back
+	
 	
 exitss:
 	ldr r0,=c
